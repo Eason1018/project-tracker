@@ -5,6 +5,7 @@ import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./features/auth/ProtectedRoute";
 
 export default function App() {
   return (
@@ -27,8 +28,10 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/:id" element={<ProjectDetail />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
+        </Route>
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
