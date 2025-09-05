@@ -1,4 +1,10 @@
+/* eslint-disable react-refresh/only-export-components */
 import React from "react";
+import {
+  getToken,
+  removeToken as removeStoredToken,
+  setToken as setStoredToken,
+} from "../../lib/token";
 
 type AuthContextValue = {
   token: string | null;
@@ -9,21 +15,21 @@ type AuthContextValue = {
 const AuthContext = React.createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = React.useState<string | null>(
-    localStorage.getItem("token"),
-  );
+  const [token, setToken] = React.useState<string | null>(getToken());
 
   // Fake login: accept anything, set a pretend token
   async function login(username: string, password: string) {
+    void username;
+    void password;
     // here you'd POST to /login with username/password
     // await api.post('/login', { username, password })
     const fakeToken = "demo-token";
-    localStorage.setItem("token", fakeToken);
+    setStoredToken(fakeToken);
     setToken(fakeToken);
   }
 
   function logout() {
-    localStorage.removeItem("token");
+    removeStoredToken();
     setToken(null);
   }
 
